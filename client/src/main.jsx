@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {createRoot} from "react-dom/client";
 
 const root = createRoot(document.getElementById("root"));
@@ -29,6 +29,19 @@ function NewTaskForm({onNewTask}) {
 
 function TaskApplication() {
   const [tasks, setTasks] = useState([]);
+
+  async function loadTasks() {
+    const res = await fetch("/api/tasks");
+    if (res.ok) {
+      setTasks(await res.json());
+    } else {
+      console.log("Smthing went wrong");
+    }
+  }
+
+  useEffect(() => {
+    loadTasks();
+  }, [])
 
   async function handleNewTask(task) {
     setTasks((prevTasks) => [...prevTasks, task]);

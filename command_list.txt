@@ -15,5 +15,25 @@ create index.html
 </body>
 <script src="src/main.jsx" type="module"></script>
 
+/// server part \\\
 
+create package.json
 
+npm install express
+
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js"
+  },
+
+create vite.config.js
+
+import {defineConfig} from "vite";
+
+export default defineConfig({
+  server: {
+    proxy: {
+      "/api": "http://localhost:3000"
+    }
+  }
+})
