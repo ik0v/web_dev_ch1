@@ -23,15 +23,24 @@ function NewTaskForm({onNewTask}) {
       />
       </label>
     </div>
-    <button>Submit new task {title}</button>
+    <button>Submit new task</button>
   </form>;
 }
 
 function TaskApplication() {
   const [tasks, setTasks] = useState([]);
 
-  function handleNewTask(task) {
+  async function handleNewTask(task) {
     setTasks((prevTasks) => [...prevTasks, task]);
+
+    await fetch("/api/tasks", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(task),
+    })
+
   }
 
   return <>
