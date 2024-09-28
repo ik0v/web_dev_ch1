@@ -1,0 +1,19 @@
+create package.json
+
+npm install -D vite
+
+  "scripts": {
+    "dev": "vite"
+  },
+
+npm install react react-dom
+
+create index.html
+
+<body>
+    <div id="root"></div>
+</body>
+<script src="src/main.jsx" type="module"></script>
+
+
+
