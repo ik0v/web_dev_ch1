@@ -20,4 +20,4 @@ app.post("/api/tasks", (req, res) => {
   res.send(200);
 })
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000);

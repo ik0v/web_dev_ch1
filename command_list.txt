@@ -37,3 +37,7 @@ export default defineConfig({
     }
   }
 })
+
+heroku git:remote -a web-dev-ch1
+
+heroku logs --tail
