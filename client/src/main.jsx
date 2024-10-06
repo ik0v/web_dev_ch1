@@ -1,31 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {createRoot} from "react-dom/client";
+import {NewTaskForm} from "./components/newTaskForm";
 
 const root = createRoot(document.getElementById("root"));
-
-function NewTaskForm({onNewTask}) {
-  const [title, setTitle] = useState("");
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    console.log("Submitting task", { title });
-    onNewTask({title});
-    setTitle("");
-  }
-
-  return <form onSubmit={handleSubmit}>
-    <div>
-      <label>
-        Title: <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-      />
-      </label>
-    </div>
-    <button>Submit new task</button>
-  </form>;
-}
 
 function TaskApplication() {
   const [tasks, setTasks] = useState([]);
@@ -44,7 +21,6 @@ function TaskApplication() {
   }, [])
 
   async function handleNewTask(task) {
-
     await fetch("/api/tasks", {
       method: "POST",
       headers: {
@@ -53,7 +29,16 @@ function TaskApplication() {
       body: JSON.stringify(task),
     })
     await loadTasks();
+  }
 
+  async function changeStatus(id) {
+    await fetch(`/api/tasks/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+    await loadTasks();
   }
 
   return <>
@@ -61,10 +46,10 @@ function TaskApplication() {
 
     <ul>
       {tasks.map((task) => (
-              <div key={task.title}>
+              <div key={task.id}>
                 <label>
-                  <input type={"checkbox"} />
-                  {task.title}
+                  <input type={"checkbox"} checked={task.completed} onChange={() => changeStatus(task.id)}/>
+                  {task.id}. {task.description}{task.completed && ' - done'}
                 </label>
               </div>))}
     </ul>

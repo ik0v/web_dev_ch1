@@ -4,9 +4,9 @@ const app = express();
 app.use(express.json());
 
 const tasks = [
-  {
-    title: "the task from server"
-  }
+  {id: 1, description: "Follow the lecture", completed: true},
+  {id: 2, description: "Read the exercise", completed: false},
+  {id: 3, description: "Complete the exercise", completed: false},
 ];
 
 app.get("/api/tasks", (req, res) => {
@@ -14,10 +14,23 @@ app.get("/api/tasks", (req, res) => {
 })
 
 app.post("/api/tasks", (req, res) => {
-  const {title} = req.body;
-  const task = {title};
+  const { id, description, completed } = req.body;
+  const task = { id, description, completed};
+  task.id = tasks.length+1;
+  task.completed = false;
   tasks.push(task);
-  res.send(200);
+  res.status(201).json(task);
+  res.send();
+})
+
+app.put("/api/tasks/:id", (req, res) => {
+  const taskId = parseInt(req.params.id);
+  const task = tasks.find(t => t.id === taskId);
+  if (!task) {
+    return res.status(404).send({message: "Task not found"});
+  }
+  task.completed = !task.completed;
+  res.status(200).send(task);
 })
 
 app.use(express.static("../client/dist"));
