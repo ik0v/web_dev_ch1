@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {createRoot} from "react-dom/client";
 import {NewTaskForm} from "./components/newTaskForm";
+import {Task} from "./components/Task";
+import {EditTaskDialog} from "./components/EditTaskDialog";
 
 const root = createRoot(document.getElementById("root"));
 
@@ -41,22 +43,27 @@ function TaskApplication() {
     await loadTasks();
   }
 
+  function handleUpdateTask(id, updatedDescription) {
+    setTasks(prevTasks =>
+      prevTasks.map(task =>
+        task.id === id ? { ...task, description: updatedDescription } : task
+      )
+    );
+  }
+
+
   return <>
     <h1>The tasks we need to do:</h1>
 
     <ul>
-      {tasks.map((task) => (
-              <div key={task.id}>
-                <label>
-                  <input type={"checkbox"} checked={task.completed} onChange={() => changeStatus(task.id)}/>
-                  {task.id}. {task.description}{task.completed && ' - done'}
-                </label>
-              </div>))}
+      {tasks.map(({id, description, completed}) => (
+        <Task key={id} id={id} description={description} completed={completed} onStatusChange={changeStatus} onUpdateTask={handleUpdateTask} />
+      ))}
     </ul>
 
-    <NewTaskForm onNewTask={handleNewTask} />
+    <NewTaskForm onNewTask={handleNewTask}/>
 
-    </>;
+  </>;
 }
 
-root.render(<TaskApplication />)
+root.render(<TaskApplication/>)
