@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {NewTaskForm} from "../components/newTaskForm";
 import {Task} from "../components/Task";
 import {Route, Routes} from "react-router-dom";
+import {TaskDetails} from "../components/TaskDetails";
 
 export function TaskApplication() {
   const [tasks, setTasks] = useState([]);
@@ -52,8 +53,9 @@ export function TaskApplication() {
     await loadTasks();
   }
 
-  return (
-    <>
+  return <Routes>
+    <Route path={"/"} element={
+      <>
       <h1>The tasks we need to do:</h1>
       <ul>
         {tasks.map(({id, description, completed}) => (
@@ -64,7 +66,10 @@ export function TaskApplication() {
                 onUpdateTask={handleUpdateTask}
           />))}
       </ul>
-        <NewTaskForm onNewTask={handleNewTask}/>
-    </>
-  );
+      <NewTaskForm onNewTask={handleNewTask}/>
+      </>}
+    />
+    <Route path={"/tasks/:id"} element={<TaskDetails tasks={tasks}/>}/>
+    <Route path={"*"} element={<h2>Not found</h2>}/>
+  </Routes>
 }
