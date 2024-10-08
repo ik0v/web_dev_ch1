@@ -27,9 +27,20 @@ app.put("/api/tasks/:id", (req, res) => {
   const taskId = parseInt(req.params.id);
   const task = tasks.find(t => t.id === taskId);
   if (!task) {
-    return res.status(404).send({message: "Task.jsx not found"});
+    return res.status(404).send({message: "Task not found"});
   }
   task.completed = !task.completed;
+  res.status(200).send(task);
+})
+
+app.put("/api/tasks/:id/description", (req, res) => {
+  const taskId = parseInt(req.params.id);
+  const task = tasks.find(t => t.id === taskId);
+  if (!task) {
+    return res.status(404).send({message: "Task not found"});
+  }
+  const { description } = req.body;
+  task.description = description
   res.status(200).send(task);
 })
 
