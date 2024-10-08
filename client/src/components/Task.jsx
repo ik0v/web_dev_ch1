@@ -18,19 +18,23 @@ export function Task({ id, description, completed, onStatusChange, onUpdateTask 
   }
 
   return (
-    <div>
-      <label>
-        <input type="checkbox" checked={completed} onChange={() => onStatusChange(id)} />
-        {id}. {description} {completed && ' - done'}
-      </label>
-      <button onClick={handleOpenDialog}>Edit</button> {}
-      {isEditing && (
-        <EditTaskDialog
-          description={description}
-          onUpdateTask={handleUpdateTask}
-          onClose={handleCloseDialog}
-        />
-      )}
-    </div>
+          <div>
+            <label>
+              <input type="checkbox" checked={completed} onChange={() => onStatusChange(id)}/>
+              {id}. {description} {completed && ' - done'}
+            </label>
+            <a href={"#"} onClick={(e) => {
+              e.preventDefault();
+              handleOpenDialog();
+            }}>[update]</a>
+            {/*<button onClick={handleOpenDialog}>Edit</button>*/}
+            {isEditing && (
+                    <EditTaskDialog
+                            description={description}
+                            onUpdateTask={handleUpdateTask}
+                            onClose={handleCloseDialog}
+                    />
+            )}
+          </div>
   );
 }
